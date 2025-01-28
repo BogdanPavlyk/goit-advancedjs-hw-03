@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>goit-advancedjs-hw-03</title>
 
-    <script type="module" crossorigin src="/goit-advancedjs-hw-03/index.js"></script>
-    <link rel="modulepreload" crossorigin href="/goit-advancedjs-hw-03/assets/modulepreload-polyfill-B5Qt9EMX.js">
-    <link rel="modulepreload" crossorigin href="/goit-advancedjs-hw-03/assets/vendor-xql2b646.js">
-    <link rel="modulepreload" crossorigin href="/goit-advancedjs-hw-03/assets/render-functions-Cm8S9jAV.js">
-    <link rel="stylesheet" crossorigin href="/goit-advancedjs-hw-03/assets/index-B55IO1Li.css">
-  </head>
-  <body>
-    <section class="gallery-section">
-      <div class="container">
-        <form class="search-form js-search-form">
-          <input class="search-input js-search-input" type="text" name="user_query" placeholder="Search images..." required />
-          <button class="search-btn" type="submit">Search</button>
-        </form>
-        <ul class="gallery js-gallery"></ul>
-        <span class="loader is-hidden js-loader"></span>
-      </div>
-    </section>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goit-advancedjs-hw-01</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet"
+    crossorigin="anonymous">
+  <script type="module" crossorigin src="/goit-advancedjs-hw-03/index.js"></script>
+  <link rel="modulepreload" crossorigin href="/goit-advancedjs-hw-03/assets/vendor-5ObWk2rO.js">
+  <link rel="stylesheet" crossorigin href="/goit-advancedjs-hw-03/assets/vendor-DumFYO8Z.css">
+  <link rel="stylesheet" crossorigin href="/goit-advancedjs-hw-03/assets/index-WCiMUhFE.css">
+</head>
+
+<body>
+  <main class="container">
+
+    <form class="query-form" autocomplete="off">
+
+      <label>
+        <input class="query-input" type="text" name="query" autofocus placeholder="Search images..." />
+      </label>
+
+      <button type="submit">Search</button>
+    </form>
+
+    <span class="loader"></span>
+
+    <ul class="gallery"></ul>
+
+  </main>
+</body>
+
 </html>
