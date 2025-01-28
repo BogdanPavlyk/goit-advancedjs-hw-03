@@ -1,4 +1,4 @@
-export const createGalleryCardTemplate = imgArr => {
+export const createGalleryImagesTemplate = imgArr => {
     return imgArr.reduce((acc, el) => {
         return (
             acc +
