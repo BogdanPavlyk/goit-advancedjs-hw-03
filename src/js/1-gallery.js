@@ -1,9 +1,9 @@
 import images from './imagesData.json';
-import { createGalleryImagesTemplate } from './render-functions';
+import { createGalleryCardTemplate } from './render-functions';
 import SimpleLightbox from "simplelightbox";
 
 const galleryList = document.querySelector(".gallery")
-galleryList.innerHTML = createGalleryImagesTemplate(images);
+galleryList.innerHTML = createGalleryCardTemplate(images);
 
 galleryList.style.listStyleType = "none";
 galleryList.style.width = "1128px";
