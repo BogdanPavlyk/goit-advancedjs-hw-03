@@ -1,58 +1,59 @@
-import iziToast from "izitoast";
-import SimpleLightbox from "simplelightbox";
-import { createGalleryCardTemplate } from "./js/render-functions";
-import { fetchPhotosByQuery } from "./js/pixabay-api";
+import { refs, simpleLightboxOptions, STORAGE_KEY } from './constants/constants.js';
+import { getPhotos } from './js/pixabay-api.js';
+import { renderGallery } from './js/render-functions.js';
+import 'izitoast/dist/css/iziToast.min.css';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import iziToast from 'izitoast';
+import SimpleLightbox from 'simplelightbox';
 
-const searchFormEl = document.querySelector('.js-search-form');
-const galleryEl = document.querySelector('.js-gallery');
-const loaderEl = document.querySelector('.js-loader');
 
-let simplelightbox = new SimpleLightbox('.gallery-card a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-});
+let query = fillFormFields(refs.form);
 
-const onSearchFormSubmit = event => {
-    event.preventDefault();
+refs.form.addEventListener('input', handleFormInput);
+refs.form.addEventListener('submit', handleSearch);
+const simpleLightBox = new SimpleLightbox('.gallery li a', simpleLightboxOptions);
 
-    const inputValue = event.currentTarget.elements.user_query.value.trim();
+function handleFormInput(e) {
+  query = e.target.value.trim();
+  localStorage.setItem(STORAGE_KEY, query);
+}
 
-    if (inputValue === '') {
-        iziToast.error({
-            message: "Search value should not be empty!",
-            position: "topRight",
-        });
-        return;
-    }
 
-    const searchParams = new URLSearchParams({
-        key: "47600623-616adcc60326fea30dcc03763",
-        q: inputValue,
-        image_type: "photo",
-        orientation: "horizontal",
-        safesearch: true,
+function handleSearch(e) {
+  e.preventDefault();
+  if (!query) return;
+
+  refs.gallery.innerHTML = '';
+  refs.loader.style.display = 'block';
+
+  getPhotos(query)
+    .then(({ hits }) => {
+      refs.loader.style.display = 'none';
+      if (hits.length) {
+        refs.gallery.innerHTML = renderGallery(hits);
+        simpleLightBox.refresh();
+      }
+      else {
+        iziToast.warning({ message: 'Sorry, there are no images matching your search query. Please try again!', position: 'topRight' });
+      }
+
+    })
+    .catch((error) => {
+      iziToast.error({ message: 'There was an error while loading pictures. Please try again!', position: 'topRight' });
+      console.error(error);
+    })
+    .finally(() => {
+      query = '';
+      localStorage.removeItem(STORAGE_KEY);
+      refs.form.reset();
     });
+}
 
-    loaderEl.classList.remove('is-hidden');
 
-    fetchPhotosByQuery(searchParams)
-        .finally(() => {
-            loaderEl.classList.add('is-hidden');
-        })
-        .then(photos => {
-            if (photos.total === 0) {
-                iziToast.error({
-                    message: "Sorry, there are no images matching your search query. Please try again!",
-                    position: "topRight",
-                });
-                galleryEl.innerHTML = '';
-                return;
-            };
-            galleryEl.innerHTML = createGalleryCardTemplate(photos.hits);
-            simplelightbox.refresh();
-        })
-        .catch(err => console.log(err)
-        );
-};
+function fillFormFields(form) {
+  const localStorageData = localStorage.getItem(STORAGE_KEY);
+  if (!localStorageData) return;
 
-searchFormEl.addEventListener('submit', onSearchFormSubmit);
+  form.elements.query.value = localStorageData;
+  return localStorageData || '';
+}

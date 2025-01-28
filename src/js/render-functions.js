@@ -1,32 +1,34 @@
-export const createGalleryCardTemplate = imgArr => {
-    return imgArr.reduce((acc, el) => {
-        return (
-            acc +
+export function renderGallery(cards) {
+    return cards
+        .map(({ webformatURL, tags, likes, views, comments, downloads, largeImageURL }) =>
             `
             <li class="gallery-card">
-              <a class="gallery-img-orig" href="${el.largeImageURL}">
-                <img class="gallery-img" src="${el.webformatURL}" alt="${el.tags}" />
-                <div class="img-data">
-                 <div class="img-data-column img-likes">
-                  <p class="img-title">Likes</p>
-                  <p class="img-value">${el.likes}</p>
-                 </div>
-                 <div class="img-data-column img-views">
-                  <p class="img-title">Views</p>
-                  <p class="img-value">${el.views}</p>
-                 </div>
-                 <div class="img-data-column img-comments">
-                  <p class="img-title">Comments</p>
-                  <p class="img-value">${el.comments}</p>
-                 </div>
-                  <div class="img-data-column img-downloads">
-                  <p class="img-title">Downloads</p>
-                  <p class="img-value">${el.downloads}</p>
-                 </div>
-                </div>
-              </a>
+                <a class="gallery-link" href="${largeImageURL}">
+                    <img class="gallery-image" src="${webformatURL}" alt="${tags}" height=312 width=200>
+                    <ul class="statistics">
+                        <li class="stat-element">
+                            <p class="stat-name">Likes</p>
+                            <p class="stat-value">${likes}</p>
+                        </li>
+
+                        <li class="stat-element">
+                            <p class="stat-name">Views</p>
+                            <p class="stat-value">${views}</p>
+                        </li>
+
+                        <li class="stat-element">
+                            <p class="stat-name">Comments</p>
+                            <p class="stat-value">${comments}</p>
+                        </li>
+
+                        <li class="stat-element">
+                            <p class="stat-name">Downloads</p>
+                            <p class="stat-value">${downloads}</p>
+                        </li>
+                    </ul>
+                </a>
             </li>
-           `
+      `
         )
-    }, '');
-};
+        .join("");
+}
